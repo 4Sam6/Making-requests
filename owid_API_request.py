@@ -5,6 +5,11 @@
 import pandas as pd
 import requests
 import matplotlib.pyplot as plt
+import os
+
+# Create directory to store charts in, if it doesn't exist
+output_dir = "daily_emissions"
+os.makedirs(output_dir, exist_ok=True)
 
 # Fetching the data from the ourworldindata.org
 df = pd.read_csv("https://ourworldindata.org/grapher/annual-co2-emissions-per-country.csv?v=1&csvType=full&useColumnShortNames=true", storage_options = {'User-Agent': 'Our World In Data data fetch/1.0'})
@@ -49,4 +54,13 @@ plt.ylabel("Total Emissions (billions,Tonnes)")
 plt.title("Total Emissions by Country")
 
 current_date = pd.Timestamp.now().strftime("%Y-%m-%d")
-plt.savefig(f'emissions_10{current_date}.png', format='png', dpi=300)
+
+
+# Save the plot with the current date, this will save it in to its own directory
+output_file = os.path.join(output_dir, f"emissions_10{current_date}.png")
+plt.savefig(output_file, format="png", dpi=300)
+
+# Delete old files (keeps only the previous week of charts)
+files = sorted(os.listdir(output_dir))
+if len(files) > 7:  # Keep only 7 days one week
+    os.remove(os.path.join(output_dir, files[0]))
