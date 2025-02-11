@@ -14,6 +14,7 @@ for country in country_codes_requested:
     if len(response) > 1 and response[1] is not None:
         all_data.extend(response[1])
 
+
 df = pd.DataFrame(all_data)
 
 

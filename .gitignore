@@ -1,2 +1,2 @@
 secrets.yml
-*.ipynb
+pynb/*.ipynb
