@@ -6,9 +6,16 @@ import pandas as pd
 import requests
 import matplotlib.pyplot as plt
 import os
+import git 
+import yaml
+
+
+
+
 
 # Create directory to store charts in, if it doesn't exist
-output_dir = "daily_emissions"
+repo_path = "/Users/Sam/Desktop/World_Development_Indicators" 
+output_dir = os.path.join(repo_path, "daily_emissions") 
 os.makedirs(output_dir, exist_ok=True)
 
 # Fetching the data from the ourworldindata.org
@@ -59,8 +66,31 @@ current_date = pd.Timestamp.now().strftime("%Y-%m-%d")
 # Save the plot with the current date, this will save it in to its own directory
 output_file = os.path.join(output_dir, f"emissions_10{current_date}.png")
 plt.savefig(output_file, format="png", dpi=300)
-
+plt.close()
 # Delete old files (keeps only the previous week of charts)
 files = sorted(os.listdir(output_dir))
 if len(files) > 7:  # Keep only 7 days one week
     os.remove(os.path.join(output_dir, files[0]))
+
+# making variable we will use
+GITHUB_USERNAME = "4Sam6"
+# read in secrets.yaml
+with open("secrets.yml") as file:
+    secrets = yaml.safe_load(file)
+GITHUB_TOKEN = secrets["github_token"]   
+REPO_NAME = "Making-requests" 
+
+# Creating the remote repository URL using the token
+REPO_URL = f"https://{GITHUB_USERNAME}:{GITHUB_TOKEN}@github.com/{GITHUB_USERNAME}/{REPO_NAME}.git"
+
+
+# Set remote URL with authentication
+repo = git.Repo(repo_path)
+origin = repo.remote(name="origin")
+origin.set_url(REPO_URL)
+
+
+# Commit and push changes
+repo.git.add(A=True)  # Add all changes
+repo.index.commit(f"Updated emissions graph for {current_date}")
+origin.push()
