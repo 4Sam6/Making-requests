@@ -1,2 +1,3 @@
 secrets.yml
 pynb/*.ipynb
+movies_dataset/movies.csv
