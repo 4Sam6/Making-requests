@@ -65,7 +65,7 @@ current_date = pd.Timestamp.now().strftime("%Y-%m-%d")
 
 
 # Save the plot with the current date, this will save it in to its own directory
-output_file = os.path.join(output_dir, f"emissions_10{current_date}.png")
+output_file = os.path.join(output_dir, f"emissions_10test{current_date}.png")
 plt.savefig(output_file, format="png", dpi=300)
 plt.close()
 # Delete old files (keeps only the previous week of charts)
