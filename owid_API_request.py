@@ -65,7 +65,7 @@ current_date = pd.Timestamp.now().strftime("%Y-%m-%d")
 
 
 # Save the plot with the current date, this will save it in to its own directory
-output_file = os.path.join(output_dir, f"emissions_10test{current_date}.png")
+output_file = os.path.join(output_dir, f"emissions_10test2{current_date}.png")
 plt.savefig(output_file, format="png", dpi=300)
 plt.close()
 # Delete old files (keeps only the previous week of charts)
@@ -76,7 +76,8 @@ if len(files) > 7:  # Keep only 7 days one week
 # making variable we will use
 GITHUB_USERNAME = "4Sam6"
 # read in secrets.yaml
-with open("secrets.yml") as file:
+secrets_path = os.path.join(repo_path, "secrets.yml")
+with open(secrets_path) as file:
     secrets = yaml.safe_load(file)
 GITHUB_TOKEN = secrets["github_token"]   
 REPO_NAME = "Making-requests" 
